@@ -1,0 +1,20 @@
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+
+{
+"id": "6006d73e18f0261b33c65440",
+"pageName": "Page one",
+"shortDescription": "abc shortDescription",
+"longDescription": "abc longDescription",
+"strapLine": "abc strapLine",
+"template": "blog",
+"plugins": [{
+"carousel": {
+"group": "home"
+}
+}],
+"images": null,
+"createdDate": 1611061295789,
+"modifiedDate": 1611061295789,
+"pageStatus": "publish"
+}

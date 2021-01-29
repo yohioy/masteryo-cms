@@ -1,0 +1,16 @@
+.DS_Store
+
+.next
+
+# package directories
+node_modules
+
+dist/*
+
+.idea/*
+
+.env
+
+.package-lock.json
+
+posts
