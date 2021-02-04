@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
-import pageDetailStyle from "assets/jss/core/components/pageDetailStyle";
+import fileUploadStyle from "assets/jss/core/components/fileUploadStyle.js";
 
-const useStyles = makeStyles(pageDetailStyle);
+const useStyles = makeStyles(fileUploadStyle);
 
 export default useStyles;

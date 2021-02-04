@@ -75,6 +75,18 @@ const dashboardRoutes = [
     ]
   },
   {
+    path: "/media",
+    name: "Media Files",
+    icon: People,
+    subRoutes: [
+      {
+        path: "/media",
+        name: "All Media",
+        icon: ArrowRight,
+      }
+    ]
+  },
+  {
     path: "/plugins",
     name: "Plugins",
     icon: Power,

@@ -4,11 +4,12 @@ import App from 'next/app'
 import Head from 'next/head'
 import Router from "next/router";
 import { ThemeProvider } from '@material-ui/core/styles'
+import CssBaseline from '@material-ui/core/CssBaseline'
 import Copyright from "../components/Copyright";
 import PageChange from "../components/PageChange";
 import theme from 'assets/themes';
 
-import "assets/css/nextjs-material-dashboard.css?v=1.0.0";
+import "assets/css/nextjs-material-dashboard.css";
 
 Router.events.on("routeChangeStart", (url) => {
   console.log(`Loading`);
@@ -71,6 +72,7 @@ class MyApp extends App {
         </Head>
 
         <ThemeProvider theme={theme()}>
+          <CssBaseline />
           <Layout>
             <Component {...pageProps} />
           </Layout>

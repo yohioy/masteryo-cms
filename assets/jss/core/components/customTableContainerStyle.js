@@ -33,17 +33,34 @@ const customTableContainerStyle = () => ({
         border: "1px solid",
         borderColor: grayColor[10],
     },
-    tableMenuItem: {
+    tableControllerList: {
+        display: "flex",
+        flexDirection: "row",
+        padding: "0",
+    },
+    tableControllerListItem: {
         margin: "0 20px 0 0",
         textTransform: "none"
     },
     rowHeaderCell: {
-        padding: "2px",
+        padding: "5px 10px",
         color: purpleColor,
-        borderColor: purpleColor
+        borderColor: grayColor[0],
+        borderLeft: "1px solid",
+        "&:first-child": {
+            borderLeft: "0",
+        }
     },
     rowBodyCell: {
-        padding: "2px"
+        padding: "5px 10px",
+    },
+    imagePreviewCell: {
+        width: "50px",
+        height: "50px",
+        overflow: "hidden",
+        "& img": {
+            width: "100%"
+        }
     },
     rowEditButton: {
         color: roseColor[2],
@@ -89,7 +106,8 @@ const customTableContainerStyle = () => ({
     },
     searchButton: {
         backgroundColor: themeColorPurple[1],
-    }
+    },
+
 
 });
 

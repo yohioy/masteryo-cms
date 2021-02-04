@@ -65,26 +65,8 @@ export default () => {
                 fontSize: '1.15em',
                 lineHeight: '1.15'
             }
-        },
-        overrides: {
-            MuiButton: {
-                root: {
-                    textTransform: "none"
-                },
-                contained: {
-                    '&$disabled': {
-                        backgroundColor: '#27267b',
-                        color: 'white',
-                        opacity: '0.45',
-                    },
-                },
-                containedPrimary: {
-                    fontSize: '14px',
-                    backgroundColor: '#27267b'
-                }
-            },
-        },
-    })
+        }
+    });
 
     return theme
 }
