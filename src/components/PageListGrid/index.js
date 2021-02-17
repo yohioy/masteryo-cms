@@ -14,11 +14,13 @@ import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
-import Button from "@material-ui/core/Button";
 import Checkbox from '@material-ui/core/Checkbox';
 import Badge from '@material-ui/core/Badge';
 import TextField from '@material-ui/core/TextField';
-
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import Grid from "@material-ui/core/Grid";
+import Avatar from "@material-ui/core/Avatar";
 
 // @material-ui/icons
 import {
@@ -30,22 +32,20 @@ import {
     Search as SearchIcon,
 } from "@material-ui/icons";
 
-
-/* lab */
+// @material-ui/lab
 import Pagination from "@material-ui/lab/Pagination";
 
-import Grid from "@material-ui/core/Grid";
-import Avatar from "@material-ui/core/Avatar";
+import Button from '../../components/CustomButtons/Button';
 
-/* styles */
-import useStyles from "./tableContainer.styles";
+// styles
+import useStyles from "./pageListGrid.styles";
 
-export default function CustomTableContainer (props) {
+export default function PageListGrid (props) {
 
     // create styles for this component
     const classes = useStyles();
 
-    const { rowData, rowHeaders } = props;
+    const { rowData } = props;
 
     console.log(rowData);
     const perPageDefault = 10;
@@ -138,23 +138,32 @@ export default function CustomTableContainer (props) {
             </form>
         </Box>
         <Box component={Paper} className={classes.tableMenuContainer}>
-            <Grid item xs alignContent="flex-end">
-                <Badge badgeContent={selectedCount} color="secondary" className={classes.tableMenuItem}>
-                    <Typography>Rows Selected</Typography>
-                </Badge>
-                <Button disabled={btnDisabled} size="small" startIcon={<SettingsBackupRestoreIcon className={classes.btnUnselect} />} className={classes.tableMenuItem}>
-                    Unselect All
-                </Button>
-                <Button disabled={btnDisabled} size="small" startIcon={<CloudUploadIcon className={classes.btnPublished} />} className={classes.tableMenuItem}>
-                    Publish
-                </Button>
-                <Button disabled={btnDisabled} size="small" startIcon={<CloudOffIcon className={classes.btnUnpublished} />} className={classes.tableMenuItem}>
-                    Unpublish
-                </Button>
-                <Button disabled={btnDisabled} size="small" startIcon={<DeleteIcon className={classes.btnDelete} />} className={classes.tableMenuItem}>
-                    Delete
-                </Button>
-            </Grid>
+            <List className={classes.tableControllerItem}>
+                <ListItem><Typography>Rows Selected: {selectedCount}</Typography></ListItem>
+                <ListItem>
+                    <Button color="transparent" disabled={btnDisabled} size="md" startIcon={<SettingsBackupRestoreIcon className={classes.btnUnselect} />} className={classes.tableMenuItem}>
+                        Unselect All
+                    </Button>
+                </ListItem>
+
+                <ListItem>
+                    <Button color="transparent" disabled={btnDisabled} size="md" startIcon={<CloudUploadIcon className={classes.btnPublished} />} className={classes.tableMenuItem}>
+                        Publish
+                    </Button>
+                </ListItem>
+
+                <ListItem>
+                    <Button color="transparent" disabled={btnDisabled} size="md" startIcon={<CloudOffIcon className={classes.btnUnpublished} />} className={classes.tableMenuItem}>
+                        Unpublish
+                    </Button>
+                </ListItem>
+
+                <ListItem>
+                    <Button color="transparent" disabled={btnDisabled} size="md" startIcon={<DeleteIcon className={classes.btnDelete} />} className={classes.tableMenuItem}>
+                        Delete
+                    </Button>
+                </ListItem>
+            </List>
         </Box>
 
         <Box component={Paper} className={classes.tableContainer}>
@@ -222,7 +231,7 @@ export default function CustomTableContainer (props) {
     )
 }
 
-CustomTableContainer.propTypes = {
+PageListGrid.propTypes = {
     rowHeaders: PropTypes.arrayOf(PropTypes.object),
     rowData: PropTypes.arrayOf(PropTypes.object),
     total: PropTypes.string,

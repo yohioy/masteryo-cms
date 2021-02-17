@@ -14,32 +14,17 @@ export default function Copyright() {
         <Box mt={8} className={classes.footerContainer}>
             <Typography variant="body2" color="textSecondary" align="center">
                 {'Copyright © '}
-                <MuiLink color="inherit" href="https://material-ui.com/">
+                <MuiLink role="footer-link" color="inherit" href="https://masteryocms.co.uk" data-testid="website">
                     Your Website
                 </MuiLink>{' | '}
-                <MuiLink color="inherit" href="/tech">
+                <MuiLink role="footer-link" color="inherit" data-testid="tech" href="/tech">
                     Tech
                 </MuiLink>{' | '}
-                <MuiLink color="inherit" href="/about">
+                <MuiLink role="footer-link" color="inherit" data-testid="about" href="/about">
                     About
                 </MuiLink>{' | '}
-                {new Date().getFullYear()}
+                <span data-testid="year">{new Date().getFullYear()}</span>
                 {'.'}
-                <Link href="/accessibility/">
-                    <a data-testid="accessibility">
-                        Accessibility
-                    </a>
-                </Link>{' | '}
-                <Link href="/privacy/">
-                    <a data-testid="privacy">
-                        Privacy
-                    </a>
-                </Link>{' | '}
-                <Link href="/terms-conditions/">
-                    <a data-testid="terms">
-                        Terms and Conditions
-                    </a>
-                </Link>
             </Typography>
         </Box>
     );

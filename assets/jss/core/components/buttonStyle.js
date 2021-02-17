@@ -265,7 +265,7 @@ const buttonStyle = {
   },
   transparent: {
     "&,&:focus,&:hover": {
-      color: "inherit",
+      color: primaryColor[0],
       background: "transparent",
       boxShadow: "none",
     },
@@ -278,6 +278,12 @@ const buttonStyle = {
     padding: "1.125rem 2.25rem",
     fontSize: "0.875rem",
     lineHeight: "1.333333",
+    borderRadius: "0.2rem",
+  },
+  md: {
+    padding: "0.40625rem 1.25rem",
+    fontSize: "0.875rem",
+    lineHeight: "1.5",
     borderRadius: "0.2rem",
   },
   sm: {

@@ -73,5 +73,6 @@ export default function CustomListItem(props) {
 }
 
 CustomListItem.propTypes = {
-    item: PropTypes.object
+    item: PropTypes.object,
+    role: PropTypes.string,
 };

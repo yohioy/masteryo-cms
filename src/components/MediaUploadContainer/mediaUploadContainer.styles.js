@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/core/styles";
-import customTableContainerStyle from "assets/jss/core/components/customTableContainerStyle";
+import pageListGridStyle from "assets/jss/core/components/customTableContainerStyle";
 
 const useStyles = makeStyles((theme) => ({
     modal: {

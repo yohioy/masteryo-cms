@@ -10,7 +10,6 @@ import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import Typography from "@material-ui/core/Typography";
 import Checkbox from "@material-ui/core/Checkbox";
-import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import ButtonBase from "@material-ui/core/ButtonBase";
 
@@ -21,7 +20,10 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 
+
 import FileUpload from "../../components/FileUpload";
+import Button from '../../components/CustomButtons/Button';
+import MediaUploadTabs from '../../components/MediaUploadTabs';
 
 /* styles */
 import useStyles from "./pageDetail.styles";
@@ -81,7 +83,7 @@ function PageDetail(props) {
                         <TextField variant="outlined" id="pageDescription" label="Description" name="pageDescription" margin="dense" defaultValue={data.pageDescription} multiline rows={8} fullWidth />
                     </Box>
                     <Box className={classes.boxContainer}>
-                        <Typography variant="subtitle2" component="h6">Header Image</Typography>
+                        <Typography variant="subtitle2" component="h6">Images</Typography>
                         <Divider className={classes.divider}/>
 
                         <Grid container spacing={2}>
@@ -99,11 +101,14 @@ function PageDetail(props) {
                                             Full resolution 1920x1080 • JPEG
                                         </Typography>
                                     </Grid>
-                                    <Grid item>
-                                        <FileUpload fileType="image" />
-                                    </Grid>
                                 </Grid>
                             </Grid>
+                        </Grid>
+
+                        <Divider className={classes.divider}/>
+
+                        <Grid container>
+                            <MediaUploadTabs />
                         </Grid>
                     </Box>
 

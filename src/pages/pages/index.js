@@ -2,14 +2,14 @@ import React from "react";
 
 // layout for this page
 import Admin from "../../components/Layout/Admin";
-import CustomTableContainer from "../../components/CustomTableContainer";
+import PageListGrid from "../../components/PageListGrid";
 
 function Pages({ data, total }) {
 
     return (
         <div>
             Pages page
-            <CustomTableContainer rowData={data} total={total} />
+            <PageListGrid rowData={data} total={total} />
         </div>
     );
 }

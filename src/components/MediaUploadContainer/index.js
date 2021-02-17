@@ -39,8 +39,6 @@ export default function MediaTableContainer (props) {
     // create styles for this component
     const classes = useStyles();
 
-    const form = useRef(null)
-
     const [modalOpen, setModalOpen] = React.useState(false);
     const [selectedFile, setSelectedFile] = React.useState('');
     const [isSelected, setIsSelected] = React.useState(false);

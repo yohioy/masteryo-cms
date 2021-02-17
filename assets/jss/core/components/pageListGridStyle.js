@@ -14,7 +14,7 @@ import {
     themeColorPurple
 } from "assets/jss/material-cms-kit";
 
-const customTableContainerStyle = () => ({
+const pageListGridStyle = () => ({
     tableMenuContainer: {
         margin: "0 0 -1px 0",
         border: "1px solid",
@@ -107,8 +107,15 @@ const customTableContainerStyle = () => ({
     searchButton: {
         backgroundColor: themeColorPurple[1],
     },
-
+    tableControllerItem: {
+        "& li": {
+            display: 'inline-block',
+            padding: "0",
+            margin: "0 20px 0 0",
+            width: "auto"
+        }
+    }
 
 });
 
-export default customTableContainerStyle;
+export default pageListGridStyle;
