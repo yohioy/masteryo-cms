@@ -14,24 +14,31 @@ import TextField from "@material-ui/core/TextField";
 import Admin from "../../components/Layout/Admin";
 import PageDetail from "../../components/PageDetail";
 
-import styles from "assets/jss/core/views/dashboardStyle.js";
+// lib
+import { fieldMapping } from "../../lib/pages/fieldMapping";
 
-import axios from "axios";
+// styles
+import styles from "assets/jss/core/views/dashboardStyle.js";
 
 const useStyles = makeStyles(styles);
 
 
-function PageDetails({ data }) {
+function PageUpdate({ data }) {
 
     // create styles for this component
     const classes = useStyles();
+
+    const dataObject = {};
+    for(const property in fieldMapping) {
+        dataObject[property] = data[fieldMapping[property]];
+    }
 
     return (
         <div>
             Page ID : {data.id}
             <br/>
             <Box className={classes.tableMenuContainer}>
-                <PageDetail data={data} />
+                <PageDetail data={dataObject} />
             </Box>
         </div>
     );
@@ -51,6 +58,6 @@ export async function getServerSideProps(context) {
     }
 }
 
-PageDetails.layout = Admin;
+PageUpdate.layout = Admin;
 
-export default PageDetails;
+export default PageUpdate;

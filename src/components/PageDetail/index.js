@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
-/* core */
+// core
 import Divider from '@material-ui/core/Divider';
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
@@ -13,19 +13,18 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Paper from "@material-ui/core/Paper";
 import ButtonBase from "@material-ui/core/ButtonBase";
 
-/* lab */
+// lab
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
-/* icons */
+// icons
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 
-
-import FileUpload from "../../components/FileUpload";
+// components
 import Button from '../../components/CustomButtons/Button';
 import MediaUploadTabs from '../../components/MediaUploadTabs';
 
-/* styles */
+// styles
 import useStyles from "./pageDetail.styles";
 
 function PageDetail(props) {
@@ -36,6 +35,7 @@ function PageDetail(props) {
     const { data } = props;
 
     const [pageStatus, setPageStatus] = React.useState('draft');
+    const [fields, setFields] = React.useState(data);
 
     const pageStatusOptions = [
         { key: "publish", value: "Publish" },
@@ -69,18 +69,39 @@ function PageDetail(props) {
     const handleParentPageChange = (event, newValue) => {
         console.log(newValue);
     };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        let submittedFields = {};
+
+        for(const fieldItem in data) {
+            if(event.target[fieldItem]) {
+                submittedFields = { ...submittedFields, ...{ [fieldItem] : event.target[fieldItem].value} };
+            }
+        }
+
+        console.log(submittedFields);
+        setFields(submittedFields);
+
+    };
+
     const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
     const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
     return (
-        <form noValidate>
+        <form noValidate onSubmit={handleSubmit}>
+
+            name: {fields.name}
+            pageStrapline: {fields.pageStrapline}
+
             <Grid container spacing={3} justify="flex-start" alignItems="flex-start">
                 <Grid item xs={12} md={12} lg={2} xl={3} />
                 <Grid item xs={12} md={12} lg={8} xl={6} className={classNames(classes.container)}>
+                    <Button color="primary" size="lg" type="submit"> Save </Button>
                     <Box className={classes.boxContainer}>
-                        <TextField variant="outlined" id="pageName" label="Page Name" name="dataTableSearch" margin="dense" defaultValue={data.pageName} required fullWidth />
-                        <TextField variant="outlined" id="pageStrapline" label="Strapline" name="pageStrapline" margin="dense" defaultValue={data.pageStrapline} fullWidth />
-                        <TextField variant="outlined" id="pageDescription" label="Description" name="pageDescription" margin="dense" defaultValue={data.pageDescription} multiline rows={8} fullWidth />
+                        <TextField variant="outlined" id="pageName" label="Page Name" name="pageName" margin="dense" defaultValue={fields.pageName} required fullWidth />
+                        <TextField variant="outlined" id="pageStrapline" label="Strapline" name="pageStrapline" margin="dense" defaultValue={fields.pageStrapline} fullWidth />
+                        <TextField variant="outlined" id="pageDescription" label="Description" name="pageDescription" margin="dense" defaultValue={fields.pageDescription} multiline rows={8} fullWidth />
                     </Box>
                     <Box className={classes.boxContainer}>
                         <Typography variant="subtitle2" component="h6">Images</Typography>
@@ -120,13 +141,14 @@ function PageDetail(props) {
                             name="parentPage"
                             options={top100Films}
                             getOptionLabel={(option) => option.title}
-                            value={data.parentPage}
+                            defaultValue={fields.parentPage}
                             onChange={handleParentPageChange}
                             renderInput={(params) => <TextField {...params} label="Parent Page" variant="outlined" margin="dense"  />}
                         />
 
                         <TextField
                             id="displayMenuLocation"
+                            name="displayMenuLocation"
                             select
                             label="Display Menu Location"
                             value=""
@@ -143,9 +165,10 @@ function PageDetail(props) {
                         </TextField>
                         <TextField
                             id="pageStatus"
+                            name="pageStatus"
                             select
                             label="Page Status"
-                            value={pageStatus}
+                            value={fields.pageStatus}
                             onChange={handleStatusChange}
                             variant="outlined"
                             margin="dense"
@@ -157,7 +180,7 @@ function PageDetail(props) {
                                 </MenuItem>
                             ))}
                         </TextField>
-                        <TextField variant="outlined" id="pagePosition" label="Page Position" name="pagePosition" margin="dense" defaultValue={data.pagePosition} fullWidth />
+                        <TextField variant="outlined" id="pagePosition" label="Page Position" name="pagePosition" margin="dense" defaultValue={fields.pagePosition} fullWidth />
                     </Box>
                     <Box className={classes.boxContainer}>
                         <Typography variant="subtitle2" component="h6">Meta Data</Typography>
@@ -169,7 +192,7 @@ function PageDetail(props) {
                             margin="dense"
                             multiline
                             rows={4}
-                            defaultValue={data.metaDescription}
+                            defaultValue={fields.metaDescription}
                             variant="outlined"
                             fullWidth
                         />
@@ -180,7 +203,7 @@ function PageDetail(props) {
                             margin="dense"
                             multiline
                             rows={4}
-                            defaultValue={data.metaKeywords}
+                            defaultValue={fields.metaKeywords}
                             variant="outlined"
                             fullWidth
                         />
@@ -191,8 +214,10 @@ function PageDetail(props) {
                         <Divider className={classes.divider}/>
                         <Autocomplete
                             multiple
-                            id="checkboxes-tags-demo"
+                            id="relatedPages"
+                            name="relatedPages"
                             options={top100Films}
+                            defaultValue={fields.relatedPages}
                             disableCloseOnSelect
                             getOptionLabel={(option) => option.title}
                             renderOption={(option, { selected }) => (

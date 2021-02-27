@@ -46,7 +46,7 @@ const dashboardRoutes = [
         icon: ArrowRight,
       },
       {
-        path: "/pages/new",
+        path: "/pages/create",
         name: "Add New",
         icon: ArrowRight,
       }
@@ -63,7 +63,7 @@ const dashboardRoutes = [
         icon: ArrowRight,
       },
       {
-        path: "/users/new",
+        path: "/users/create",
         name: "Add New",
         icon: ArrowRight,
       },

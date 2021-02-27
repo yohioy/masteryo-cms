@@ -15,6 +15,7 @@ import {
 // styles
 import useStyles from "./mediaUploadTabs.styles";
 
+// components
 import AddNewImageTabPanel from "./addNewImageTabPanel";
 
 function TabPanel(props) {

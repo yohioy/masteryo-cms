@@ -76,7 +76,7 @@ export default function Navbar(props) {
                 </div>
                 <Hidden smDown implementation="css">
                     <IconButton className={classes.iconButton} onClick={handleToggle} ref={anchorRef}>
-                        <Avatar alt="Yo" src="/broken-image.jpg" className={classes.avatarButton} />
+                        <Avatar alt="Yo" src="" className={classes.avatarButton} />
                     </IconButton>
                     <Popper open={open} anchorEl={anchorRef.current} transition disablePortal>
                         {({ TransitionProps, placement }) => (

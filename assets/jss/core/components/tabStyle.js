@@ -14,7 +14,7 @@ import {
     themeColorPurple
 } from "assets/jss/material-cms-kit";
 
-const tabStyle = (theme) => ({
+const tabStyle = () => ({
     root: {
         flexGrow: 1,
         color: primaryColor,

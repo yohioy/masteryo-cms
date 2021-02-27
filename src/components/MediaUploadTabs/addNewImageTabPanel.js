@@ -9,6 +9,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
 import IconButton from '@material-ui/core/IconButton';
 import Collapse from '@material-ui/core/Collapse';
+import Paper from '@material-ui/core/Paper';
 
 // icons
 import {
@@ -22,7 +23,8 @@ import Alert from '@material-ui/lab/Alert';
 
 // components
 import Button from "../CustomButtons/Button";
-import CustomSnackbars from "../CustomSnackbars";
+import CustomUploadButton from "./customUploadButton";
+
 
 
 export default function AddNewImageTabPanel(props) {
@@ -31,11 +33,9 @@ export default function AddNewImageTabPanel(props) {
     // create styles for this component
     const classes = useStyles();
 
-    const [selectedFile, setSelectedFile] = React.useState('');
-    const [uploadStatus, setUploadStatus] = React.useState(false);
-    const [isSelected, setIsSelected] = React.useState(false);
-    const [imageType, setImageType] = React.useState('draft');
-    const [openAlertBox, setOpenAlertBox] = React.useState(true);
+    const [selectedFiles, setSelectedFiles] = React.useState([]);
+    const [selectedFilesCount, setSelectedFilesCount] = React.useState(0);
+    const [imageType, setImageType] = React.useState('');
 
     const imageTypes = [
         { key: 'header', value: 'Header' },
@@ -49,7 +49,7 @@ export default function AddNewImageTabPanel(props) {
         setImageType(event.target.value);
     };
 
-    const handleSubmission = async () => {
+    /*const handleSubmission = async () => {
         if(selectedFile) {
             const formData = new FormData();
             formData.append('image_file', selectedFile);
@@ -63,35 +63,40 @@ export default function AddNewImageTabPanel(props) {
             const data = await response.json();
 
             if(data.code === 200) {
-                setUploadStatus(true);
+                setUploadStatus('1');
+            } else {
+                setUploadStatus('2');
             }
 
             console.log(data);
         } else {
             console.log('No file selected');
         }
-    };
+    };*/
 
 
     const handleSelectImageChange = async (event) => {
         const selection = event.target.files;
 
-        setIsSelected(true);
-        setOpenAlertBox(true);
-        setSelectedFile(selection[0]);
+        console.log(selectedFiles);
+        if(selection.length > 0) {
+            let selectedImage = {
+                imageType: imageType,
+                imageName: selection[0].name,
+                imageMimeType: selection[0].type,
+                imageSize: selection[0].size
+            };
+            selectedFiles.push(selectedImage);
+            setSelectedFiles(selectedFiles);
+            setSelectedFilesCount(selectedFilesCount + 1);
+        }
     };
 
-    const handleUnselectImage = async () => {
-
-        console.log(isSelected);
-        console.log(selectedFile);
-        console.log(isSelected);
-
-        setOpenAlertBox(false);
-        setIsSelected(false);
-        setSelectedFile('');
+    const handleUnselectImage = async (id) => {
+        selectedFiles.splice(id, 1);
+        setSelectedFiles(selectedFiles);
+        setSelectedFilesCount(selectedFilesCount - 1);
     };
-
 
     return (
         <div
@@ -105,6 +110,29 @@ export default function AddNewImageTabPanel(props) {
                 <Box p={3}>
                     <Grid container spacing={3} justify="flex-start" alignItems="flex-start">
                         <Grid item xs={12} className={classNames(classes.container)}>
+
+                            {selectedFilesCount > 0 ? (
+                                <Paper variant="outlined" className={classes.selectedFileDisplayContainer}>
+                                    <Typography variant="subtitle2">Selected Files</Typography>
+
+                                    {selectedFiles.map((item, index) => {
+                                        return (
+                                            <Alert key={index} severity="success" action={<IconButton
+                                                aria-label="close"
+                                                color="inherit"
+                                                size="small"
+                                                onClick={() => handleUnselectImage(index)}
+                                            >
+                                                <CloseIcon fontSize="inherit" />
+                                            </IconButton>}>
+                                                Type: { item.imageType }, Name: { item.imageName }
+                                            </Alert>
+                                        );
+                                    })}
+                                </Paper>
+                            ) : null
+                            }
+
                             <TextField
                                 id="imageType"
                                 select
@@ -124,44 +152,9 @@ export default function AddNewImageTabPanel(props) {
 
                             <div>
                                 <input accept="image/*" className={classes.input} id="button-select-file" type="file" onChange={handleSelectImageChange} hidden />
+                                <CustomUploadButton display={ imageType !== '' ? true : false } />
 
-                                {isSelected ? (
-                                    // <Alert severity="info">Selected file: { selectedFile.name }</Alert>
-                                    <Collapse in={openAlertBox}>
-                                    <Alert severity="info" action={
-                                        <IconButton
-                                        aria-label="close"
-                                        color="inherit"
-                                        size="small"
-                                        onClick={handleUnselectImage}
-                                        >
-                                        <CloseIcon fontSize="inherit" />
-                                        </IconButton>
-                                    }
-                                    >
-                                    Selected file: { selectedFile.name }
-                                    </Alert>
-                                    </Collapse>
-                                ) : null
-                                }
-
-                                {uploadStatus ? (
-                                    <Alert severity="success"> Upload Successful </Alert>
-                                ) : null
-                                }
-
-                                <label htmlFor="button-select-file">
-                                    <Button color="transparent" size="large" component="span" startIcon={<AddPhotoAlternateOutlinedIcon />} >
-                                        Select Image
-                                    </Button>
-                                </label>
                             </div>
-                            {isSelected ? (
-                            <Button variant="contained" color="primary" startIcon={<CloudUploadIcon />} onClick={handleSubmission}>
-                                Upload
-                            </Button>
-                            ) : null
-                            }
                         </Grid>
                     </Grid>
                 </Box>
