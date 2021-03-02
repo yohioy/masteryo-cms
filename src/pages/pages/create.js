@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import classNames from "classnames";
 import Link from "next/link";
 
@@ -16,7 +16,7 @@ import Admin from "../../components/Layout/Admin";
 // lib
 import { objectFields } from "./lib/fields";
 import { validation } from "./lib/validation";
-import { pageMenuPositions, pageStatusOptions, relatedPages } from "./lib/constants";
+import { pageMenuLocation, pageStatusOptions, templateTypes } from "./lib/constants";
 
 // styles
 import styles from "assets/jss/core/views/pageEditorStyle";
@@ -29,14 +29,27 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Checkbox from "@material-ui/core/Checkbox";
 import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
+import IconButton from "@material-ui/core/IconButton";
+import Alert from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles(styles);
 
 
-function PageCreate() {
+function PageCreate({ data }) {
 
     // create styles for this component
     const classes = useStyles();
+    const pageForm = useRef();
+    const refRelatedPages = useRef();
+
+
+    let relatedPageList = data.map(item => {
+        return { id: item.id, title: item.pageName };
+    });
+
+    let pageList = [...relatedPageList];
+    pageList.push({id: 'root', title: 'Root'});
+
 
     const dataObject = {};
     for(const property in objectFields) {
@@ -44,14 +57,48 @@ function PageCreate() {
     }
 
     const [fields, setFields] = React.useState(dataObject);
+    const [selectedRelatedPages, setSelectedRelatedPages] = React.useState([]);
+    const [saveStatus, setSaveStatus] = React.useState(false);
 
-    const handleParentPageChange = (event, newValue) => {
-        console.log(newValue);
+    const handleSubmit = async() => {
+        const form = pageForm.current;
+
+        const submittedFields = fieldMapper(form);
+
+        const options = {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(submittedFields)
+        };
+
+        const response = await fetch('http://localhost:5023/api/pages', options);
+
+        if(response.ok === true) {
+            setSaveStatus(true);
+        }
     };
 
-    const handleSubmit = (event) => {
+    const handleChangeRelatedPages = (event, values) => {
+        const selected = values.map(item => {
+            return item.id;
+        });
 
+        setSelectedRelatedPages(selected);
     };
+
+    const fieldMapper = (form) => {
+        let submittedFields = {};
+
+        for(const property in objectFields) {
+            submittedFields = { ...submittedFields, ...{ [property] : form[property].value} };
+        }
+
+        submittedFields = { ...submittedFields, ...{ ['relatedPages'] : JSON.stringify(selectedRelatedPages)} };
+        console.log('submittedFields',submittedFields);
+
+        return submittedFields;
+    };
+
 
 
     const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
@@ -59,15 +106,21 @@ function PageCreate() {
 
     return (
         <div>
-            <form noValidate onSubmit={handleSubmit}>
+            <form noValidate ref={pageForm}>
                 <Grid container spacing={3} justify="flex-start" alignItems="flex-start">
                     <Grid item xs={12} md={12} lg={2} xl={3} />
                     <Grid item xs={12} md={12} lg={8} xl={6} className={classNames(classes.container)}>
-                        <Button color="primary" size="lg" type="submit"> Save </Button>
+
+                        { saveStatus ? <Alert severity="success">Page Saved</Alert> : null }
+
+                        <Button color="primary" size="lg" onClick={handleSubmit}> Save </Button>
                         <Box title="Page Main" className={classes.boxContainer}>
                             <TextField variant="outlined" id="pageName" label="Page Name" name="pageName" margin="dense" defaultValue={fields.pageName} required fullWidth />
-                            <TextField variant="outlined" id="pageStrapline" label="Strapline" name="pageStrapline" margin="dense" defaultValue={fields.pageStrapline} fullWidth />
-                            <TextField variant="outlined" id="pageDescription" label="Description" name="pageDescription" margin="dense" defaultValue={fields.pageDescription} multiline rows={8} fullWidth />
+                            <TextField variant="outlined" id="strapLine" label="Strapline" name="strapLine" margin="dense" defaultValue={fields.strapLine} fullWidth />
+                            <TextField variant="outlined" id="seoFriendlyLinkId" label="SEO Link" name="seoFriendlyLinkId" margin="dense" defaultValue={fields.seoFriendlyLinkId} fullWidth />
+                            <TextField variant="outlined" id="customLink" label="Custom Link" name="customLink" margin="dense" defaultValue={fields.customLink} fullWidth />
+                            <TextField variant="outlined" id="longDescription" label="Long Description" name="longDescription" margin="dense" defaultValue={fields.longDescription} multiline rows={8} fullWidth />
+                            <TextField variant="outlined" id="shortDescription" label="Short Description" name="shortDescription" margin="dense" defaultValue={fields.shortDescription} multiline rows={8} fullWidth />
                         </Box>
 
                         <Box title="Images" className={classes.boxContainer}>
@@ -103,27 +156,43 @@ function PageCreate() {
                         <Box title="Page Settings" className={classes.boxContainer}>
                             <Typography variant="subtitle2" component="h6">Page Settings</Typography>
                             <Divider className={classes.divider}/>
-                            <Autocomplete
-                                id="parentPage"
-                                name="parentPage"
-                                options={relatedPages}
-                                getOptionLabel={(option) => option.title}
-                                defaultValue={fields.parentPage}
-                                onChange={handleParentPageChange}
-                                renderInput={(params) => <TextField {...params} label="Parent Page" variant="outlined" margin="dense"  />}
-                            />
 
                             <TextField
-                                id="displayMenuLocation"
-                                name="displayMenuLocation"
+                                id="template"
+                                name="template"
                                 select
-                                label="Display Menu Location"
-                                value={fields.menuLocation}
+                                label="Template"
+                                defaultValue={fields.template}
                                 variant="outlined"
                                 margin="dense"
                                 fullWidth
                             >
-                                {pageMenuPositions.map((option,index) => (
+                                {templateTypes.map((option,index) => (
+                                    <MenuItem key={index} value={option.key}>
+                                        {option.value}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+
+                            <Autocomplete
+                                id="parentPage"
+                                name="parentPage"
+                                options={pageList}
+                                getOptionLabel={(option) => option.title}
+                                renderInput={(params) => <TextField {...params} label="Parent Page" variant="outlined" margin="dense"  />}
+                            />
+
+                            <TextField
+                                id="pageMenuLocation"
+                                name="pageMenuLocation"
+                                select
+                                label="Display Menu Location"
+                                defaultValue={fields.pageMenuLocation}
+                                variant="outlined"
+                                margin="dense"
+                                fullWidth
+                            >
+                                {pageMenuLocation.map((option,index) => (
                                     <MenuItem key={index} value={option.key}>
                                         {option.value}
                                     </MenuItem>
@@ -134,7 +203,7 @@ function PageCreate() {
                                 name="pageStatus"
                                 select
                                 label="Page Status"
-                                value={fields.pageStatus}
+                                defaultValue={fields.pageStatus}
                                 variant="outlined"
                                 margin="dense"
                                 fullWidth
@@ -151,6 +220,15 @@ function PageCreate() {
                         <Box title="Meta Data" className={classes.boxContainer}>
                             <Typography variant="subtitle2" component="h6">Meta Data</Typography>
                             <Divider className={classes.divider}/>
+                            <TextField
+                                id="metaTitle"
+                                name="metaTitle"
+                                label="Meta Title"
+                                margin="dense"
+                                defaultValue={fields.metaTitle}
+                                variant="outlined"
+                                fullWidth
+                            />
                             <TextField
                                 id="metaDescription"
                                 name="metaDescription"
@@ -182,9 +260,9 @@ function PageCreate() {
                                 multiple
                                 id="relatedPages"
                                 name="relatedPages"
-                                options={relatedPages}
-                                defaultValue={fields.relatedPages}
-                                disableCloseOnSelect
+                                ref={refRelatedPages}
+                                options={relatedPageList}
+                                onChange={handleChangeRelatedPages}
                                 getOptionLabel={(option) => option.title}
                                 renderOption={(option, { selected }) => (
                                     <React.Fragment>
@@ -197,9 +275,7 @@ function PageCreate() {
                                         {option.title}
                                     </React.Fragment>
                                 )}
-                                renderInput={(params) => (
-                                    <TextField {...params} variant="outlined" label="Pages" placeholder="Pages" />
-                                )}
+                                renderInput={(params) => (<TextField {...params} variant="outlined" label="Related Pages" margin="dense" />)}
                             />
                         </Box>
                     </Grid>
@@ -210,6 +286,19 @@ function PageCreate() {
     );
 }
 
+
+export async function getServerSideProps() {
+
+    const response = await fetch(`http://localhost:5023/api/pages`);
+    const { total, data } = await response.json();
+
+    return {
+        props: {
+            total: total,
+            data: data
+        }
+    }
+}
 
 PageCreate.layout = Admin;
 

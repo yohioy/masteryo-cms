@@ -7,18 +7,19 @@ export const pageStatusOptions = [
     { key: "trash", value: "Trash" }
 ];
 
-export const pageMenuPositions = [
-    { key: 'header', value: 'Header Menu' },
-    { key: 'footer', value: 'Footer Menu' },
-    { key: 'side', value: 'Side Menu' }
+export const pageMenuLocation = [
+    { key: 'root', value: 'Root' },
+    { key: 'header', value: 'Header' },
+    { key: 'footer', value: 'Footer' },
+    { key: 'left', value: 'Left' },
+    { key: 'right', value: 'Right' }
 ];
 
-export const relatedPages = [
-    { title: 'The Shawshank Redemption', id: '1994' },
-    { title: 'The Godfather', id: '1972' },
-    { title: 'The Godfather: Part II', id: '1974' },
-    { title: 'The Dark Knight', id: '2008' },
-    { title: '12 Angry Men', id: '1957' },
-    { title: "Schindler's List", id: '1993' },
-    { title: 'Pulp Fiction', id: '1994' }
+export const templateTypes = [
+    { key: 'general', value: 'General' },
+    { key: 'services', value: 'Services' },
+    { key: 'servicesGroup', value: 'Service Parent' },
+    { key: 'contact', value: 'Contact' },
+    { key: 'blog', value: 'Blog' },
+    { key: 'blogGroup', value: 'Blog Parent' },
 ];

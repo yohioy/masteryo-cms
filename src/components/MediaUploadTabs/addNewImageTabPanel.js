@@ -110,7 +110,7 @@ export default function AddNewImageTabPanel(props) {
                 <Box p={3}>
                     <Grid container spacing={3} justify="flex-start" alignItems="flex-start">
                         <Grid item xs={12} className={classNames(classes.container)}>
-
+                            <TextField type="hidden" id="images" name="images" value={JSON.stringify(selectedFiles)} />
                             {selectedFilesCount > 0 ? (
                                 <Paper variant="outlined" className={classes.selectedFileDisplayContainer}>
                                     <Typography variant="subtitle2">Selected Files</Typography>
