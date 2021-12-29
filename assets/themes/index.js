@@ -8,7 +8,7 @@ import {
 } from '../jss/material-cms-kit';
 
 
-export default () => {
+export default function Themes() {
 
     // Create a theme instance.
     const theme = createMuiTheme({

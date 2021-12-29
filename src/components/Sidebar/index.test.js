@@ -1,3 +1,54 @@
+import * as React from 'react';
+import '@testing-library/jest-dom/extend-expect';
+import { cleanup, screen, render } from '@testing-library/react';
+
+import Sidebar from './';
+import Dashboard from '@material-ui/icons/Dashboard';
+import ArrowRight from '@material-ui/icons/ArrowRight';
+
+let routes;
+
+beforeAll(() => {
+  routes = [
+    {
+      path: '/dashboard',
+      name: 'Dashboard',
+      icon: Dashboard,
+      subRoutes: [
+        {
+          path: '/dashboard',
+          name: 'View Dashboard',
+          icon: ArrowRight
+        }
+      ]
+    }
+  ];
+});
+
+afterEach(cleanup);
+
+describe('Sidebar', () => {
+  it('has correct element', () => {
+
+    const { container } = render(<Sidebar routes={routes} logoText="mylogo" />);
+
+    const element = screen.getAllByTestId('menu-dashboard')[0];
+    expect(container).toMatchSnapshot();
+    expect(element).toBeTruthy();
+    expect(element).toHaveTextContent('Dashboard');
+  });
+
+  it('has correct brand', () => {
+
+    const { container } = render(<Sidebar routes={routes} logoText="mylogo" />);
+    const element = screen.getAllByTestId('brand')[0];
+
+    expect(container).toMatchSnapshot();
+    expect(element).toBeTruthy();
+    expect(element).toHaveTextContent('mylogo');
+  });
+});
+
 import React from 'react';
 import { createMount } from '@material-ui/core/test-utils';
 import { render, fireEvent, waitFor, act, screen } from '@testing-library/react'

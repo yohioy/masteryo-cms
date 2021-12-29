@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`has correct links 1`] = `
+<div>
+  <button
+    class="MuiButtonBase-root MuiButton-root makeStyles-button-1 MuiButton-text"
+    data-testid="button-component"
+    tabindex="0"
+    type="button"
+  >
+    <span
+      class="MuiButton-label"
+    />
+    <span
+      class="MuiTouchRipple-root"
+    />
+  </button>
+</div>
+`;

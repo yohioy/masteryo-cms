@@ -1,12 +1,14 @@
-import React, { Component } from "react";
+import React, {Component, useEffect} from "react";
 import Router from "next/router";
 
-export default class Index extends Component {
-    componentDidMount = () => {
-        Router.push("/dashboard");
-    };
+function Index () {
 
-    render() {
-        return <div />;
-    }
+    useEffect(() => {
+        Router.push("/dashboard");
+    });
+
+    return <div />;
+
 }
+
+export default Index;

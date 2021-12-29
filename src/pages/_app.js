@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import ReactDOM from "react-dom";
 import App from 'next/app'
 import Head from 'next/head'
@@ -28,46 +28,25 @@ Router.events.on("routeChangeError", () => {
   document.body.classList.remove("body-page-transition");
 });
 
-class MyApp extends App {
-  constructor(props) {
-    super(props)
+const MyApp = ({ Component, pageProps }) => {
 
-    this.state = {
-      cookie: false,
-    }
-  }
+  const Layout = Component.layout || (({ children }) => <>{children}</>);
 
-  componentDidMount() {
-    // Remove the server-side injected CSS.
+  useEffect(() => {
     const jssStyles = document.querySelector('#jss-server-side')
     if (jssStyles) {
       jssStyles.parentElement.removeChild(jssStyles)
     }
-  }
+  });
 
-  static async getInitialProps({ Component, router, ctx }) {
-    let pageProps = {};
-
-    if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx);
-    }
-
-    return { pageProps };
-  }
-
-  render() {
-    const { Component,pageProps } = this.props;
-
-    const Layout = Component.layout || (({ children }) => <>{children}</>);
-
-    return (
+  return (
       <React.Fragment>
         <Head>
           <title>CMS</title>
           <meta name="theme-color" content="#42145f"></meta>
           <meta
-            name="viewport"
-            content="minimum-scale=1, initial-scale=1, width=device-width"
+              name="viewport"
+              content="minimum-scale=1, initial-scale=1, width=device-width"
           />
         </Head>
 
@@ -79,8 +58,13 @@ class MyApp extends App {
           <Copyright />
         </ThemeProvider>
       </React.Fragment>
-    )
-  }
+  )
+
+}
+
+MyApp.getInitialProps = async (appContext) => {
+  const appProps = await App.getInitialProps(appContext)
+  return { ...appProps }
 }
 
 export default MyApp

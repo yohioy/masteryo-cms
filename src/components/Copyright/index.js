@@ -1,31 +1,48 @@
 import React from 'react';
-import Link from 'next/link'
+import Link from 'next/link';
 import Typography from '@material-ui/core/Typography';
 import MuiLink from '@material-ui/core/Link';
-import Box from "@material-ui/core/Box";
+import Box from '@material-ui/core/Box';
 
-import useStyles from "./copyright.styles";
+import useStyles from './copyright.styles';
 
 export default function Copyright() {
+  const classes = useStyles();
 
-    const classes = useStyles();
-
-    return (
-        <Box mt={8} className={classes.footerContainer}>
-            <Typography variant="body2" color="textSecondary" align="center">
-                {'Copyright © '}
-                <MuiLink role="footer-link" color="inherit" href="https://masteryocms.co.uk" data-testid="website">
-                    Your Website
-                </MuiLink>{' | '}
-                <MuiLink role="footer-link" color="inherit" data-testid="tech" href="/tech">
-                    Tech
-                </MuiLink>{' | '}
-                <MuiLink role="footer-link" color="inherit" data-testid="about" href="/about">
-                    About
-                </MuiLink>{' | '}
-                <span data-testid="year">{new Date().getFullYear()}</span>
-                {'.'}
-            </Typography>
-        </Box>
-    );
+  return (
+    <Box mt={8} className={classes.footerContainer}>
+      <Typography variant="body2" color="textSecondary" align="center">
+        {'Copyright © '}
+        <MuiLink
+          color="inherit"
+          href="https://material-ui.com/"
+          data-testid="your-website"
+        >
+          Your Website
+        </MuiLink>
+        {' | '}
+        <MuiLink color="inherit" href="/tech" data-testid="tech">
+          Tech
+        </MuiLink>
+        {' | '}
+        <MuiLink color="inherit" href="/about">
+          About
+        </MuiLink>
+        {' | '}
+        {new Date().getFullYear()}
+        {'.'}
+        <Link href="/accessibility/">
+          <a data-testid="accessibility">Accessibility</a>
+        </Link>
+        {' | '}
+        <Link href="/privacy/">
+          <a data-testid="privacy">Privacy</a>
+        </Link>
+        {' | '}
+        <Link href="/terms-conditions/">
+          <a data-testid="terms">Terms and Conditions</a>
+        </Link>
+      </Typography>
+    </Box>
+  );
 }

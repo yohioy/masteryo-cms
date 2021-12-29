@@ -16,61 +16,125 @@
 
 */
 // @material-ui/icons
-import Dashboard from "@material-ui/icons/Dashboard";
-import ArtTrack from "@material-ui/icons/ArtTrack";
-import Power from "@material-ui/icons/Power";
+import Dashboard from '@material-ui/icons/Dashboard';
+import ArtTrack from '@material-ui/icons/ArtTrack';
+import Power from '@material-ui/icons/Power';
+import ArrowRight from '@material-ui/icons/ArrowRight';
 import People from "@material-ui/icons/People";
-import ArrowRight from "@material-ui/icons/ArrowRight";
 
 const dashboardRoutes = [
   {
-    path: "/dashboard",
-    name: "Dashboard",
+    path: '/dashboard',
+    name: 'Dashboard',
     icon: Dashboard,
     subRoutes: [
       {
-        path: "/dashboard",
-        name: "View Dashboard",
-        icon: ArrowRight,
+        path: '/dashboard',
+        name: 'View Dashboard',
+        icon: ArrowRight
       }
     ]
   },
   {
-    path: "/pages",
-    name: "Pages",
+    path: '/products',
+    name: 'Products',
     icon: ArtTrack,
     subRoutes: [
       {
-        path: "/pages",
-        name: "All Pages",
-        icon: ArrowRight,
+        path: '/products',
+        name: 'All Products',
+        icon: ArrowRight
       },
       {
-        path: "/pages/create",
-        name: "Add New",
-        icon: ArrowRight,
+        path: '/products/new',
+        name: 'Add New',
+        icon: ArrowRight
+      },
+      {
+        path: '/categories',
+        name: 'Categories',
+        icon: ArrowRight
+      },
+      {
+        path: '/attributes',
+        name: 'Attributes',
+        icon: ArrowRight
       }
     ]
   },
   {
-    path: "/users",
-    name: "Users",
-    icon: People,
+    path: '/shop',
+    name: 'Shop',
+    icon: ArtTrack,
     subRoutes: [
       {
-        path: "/users",
-        name: "All Users",
-        icon: ArrowRight,
+        path: '/shipping',
+        name: 'Shipping',
+        icon: ArrowRight
       },
       {
-        path: "/users/create",
-        name: "Add New",
-        icon: ArrowRight,
+        path: '/coupons',
+        name: 'Coupons',
+        icon: ArrowRight
       },
       {
-        path: "/users/groups",
-        name: "Groups",
-        icon: ArrowRight,
+        path: '/orders',
+        name: 'Orders',
+        icon: ArrowRight
+      },
+      {
+        path: '/customers',
+        name: 'Customers',
+        icon: ArrowRight
+      }
+    ]
+  },
+  {
+    path: '/pages',
+    name: 'Pages',
+    icon: ArtTrack,
+    subRoutes: [
+      {
+        path: '/pages',
+        name: 'Pages',
+        icon: ArrowRight
+      },
+      {
+        path: '/pages/new',
+        name: 'New Page',
+        icon: ArrowRight
+      },
+      {
+        path: '/orders',
+        name: 'Orders',
+        icon: ArrowRight
+      },
+      {
+        path: '/customers',
+        name: 'Customers',
+        icon: ArrowRight
+      }
+    ]
+  },
+  {
+    path: '/users',
+    name: 'Users',
+    icon: ArrowRight,
+    subRoutes: [
+      {
+        path: '/users',
+        name: 'All Users',
+        icon: ArrowRight
+      },
+      {
+        path: '/users/new',
+        name: 'Add New',
+        icon: ArrowRight
+      },
+      {
+        path: '/users/groups',
+        name: 'Groups',
+        icon: ArrowRight
       }
     ]
   },
@@ -87,14 +151,14 @@ const dashboardRoutes = [
     ]
   },
   {
-    path: "/plugins",
-    name: "Plugins",
+    path: '/plugins',
+    name: 'Plugins',
     icon: Power,
     subRoutes: [
       {
-        path: "/plugins/all",
-        name: "All Plugins",
-        icon: ArrowRight,
+        path: '/plugins/all',
+        name: 'All Plugins',
+        icon: ArrowRight
       }
     ]
   }

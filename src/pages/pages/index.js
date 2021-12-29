@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 // layout for this page
 import Admin from "../../components/Layout/Admin";
@@ -15,16 +15,26 @@ function Pages({ data, total }) {
 }
 
 export async function getServerSideProps() {
+  let total = 0;
+  let data = [];
 
-    const response = await fetch(`http://localhost:5023/api/pages`);
-    const { total, data } = await response.json();
+  try {
+    const response = await fetch(
+      `http://localhost:3003/products/dev/categories `
+    );
+    const responseObject = await response.json();
+    total = responseObject.total;
+    data = responseObject.data;
+  } catch (e) {
+    console.log(`Error: ${e.message}`);
+  }
 
-    return {
-        props: {
-            total: total,
-            data: data
-        }
+  return {
+    props: {
+      total: total,
+      data: data
     }
+  };
 }
 
 Pages.layout = Admin;

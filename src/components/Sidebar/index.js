@@ -71,5 +71,5 @@ Sidebar.propTypes = {
     handleDrawerToggle: PropTypes.func,
     logoText: PropTypes.string,
     routes: PropTypes.arrayOf(PropTypes.object),
-    open: PropTypes.bool,
+    open: PropTypes.bool
 };

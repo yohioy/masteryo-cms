@@ -1,17 +1,10 @@
-import React from "react";
+import React from 'react';
 
 // layout for this page
-import Admin from "../../components/Layout/Admin";
+import Admin from '../../components/Layout/Admin';
 
-function Dashboard() {
-
-    return (
-        <div>
-            Dashboard page
-        </div>
-    );
+export default function Dashboard() {
+  return <h1 data-testid="dashboard-header">MyShop Dashboard</h1>;
 }
 
 Dashboard.layout = Admin;
-
-export default Dashboard;
