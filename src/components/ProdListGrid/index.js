@@ -199,7 +199,7 @@ export default function CustomTableContainer(props) {
                 <TableCell className={classes.rowHeaderCell}>ID</TableCell>
                 <TableCell className={classes.rowHeaderCell}>Title</TableCell>
                 <TableCell className={classes.rowHeaderCell} align="right">
-                  Template
+                  Free Stock
                 </TableCell>
                 <TableCell className={classes.rowHeaderCell} align="right">
                   Images
@@ -211,7 +211,7 @@ export default function CustomTableContainer(props) {
                   Modified Date
                 </TableCell>
                 <TableCell className={classes.rowHeaderCell} align="right">
-                  Page Status
+                  Prod Status
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -239,7 +239,7 @@ export default function CustomTableContainer(props) {
                       />
                     </TableCell>
                     <TableCell className={classes.rowBodyCell}>
-                      <Link href="/pages/[id]" as={`/pages/${row.id}`}>
+                      <Link href="/products/[id]" as={`/products/${row.id}`}>
                         <a className={classes.listItemSub}>
                           <IconButton aria-label="edit">
                             <EditIcon
@@ -262,10 +262,10 @@ export default function CustomTableContainer(props) {
                       scope="row"
                       className={classes.rowBodyCell}
                     >
-                      {row.pageName}
+                      {row.prodName}
                     </TableCell>
                     <TableCell align="right" className={classes.rowBodyCell}>
-                      {row.template}
+                      {row.freeStock}
                     </TableCell>
                     <TableCell align="right" className={classes.rowBodyCell}>
                       {row.images}
@@ -277,7 +277,7 @@ export default function CustomTableContainer(props) {
                       {row.modifiedDate}
                     </TableCell>
                     <TableCell align="right" className={classes.rowBodyCell}>
-                      {row.pageStatus}
+                      {row.prodStatus}
                     </TableCell>
                   </TableRow>
                 );

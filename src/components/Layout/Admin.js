@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createRef, useEffect, useState } from 'react';
 // creates a beautiful scrollbar
 import PerfectScrollbar from 'perfect-scrollbar';
 import 'perfect-scrollbar/css/perfect-scrollbar.css';
@@ -14,18 +14,23 @@ import Navbar from '../../components/Navbar';
 import Styles from 'assets/jss/core/layouts/adminStyle';
 // import logo from "assets/img/reactlogo.png";
 
-import routes from 'routes.js';
-
 const useStyles = makeStyles(Styles);
 
 export default function Admin({ children, ...rest }) {
   const classes = useStyles();
 
   // ref to help us initialize PerfectScrollbar on windows devices
-  const mainPanel = React.createRef();
+  const mainPanel = createRef();
 
   // states and functions
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [routes, setRoutes] = useState([]);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('routes');
+    setRoutes(JSON.parse(saved));
+  });
+
   const handleDrawerToggle = () => {
     if (mobileOpen) {
       setMobileOpen(false);

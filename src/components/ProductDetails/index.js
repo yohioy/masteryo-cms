@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-// core
+/* core */
+import {makeStyles} from "@material-ui/core/styles";
 import Divider from '@material-ui/core/Divider';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
@@ -13,53 +14,45 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Paper from '@material-ui/core/Paper';
 import ButtonBase from '@material-ui/core/ButtonBase';
 
-// lab
+/* lab */
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
-// icons
+/* icons */
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 
-// components
+import FileUpload from '../../components/FileUpload';
 import Button from '../../components/CustomButtons/Button';
-import MediaUploadTabs from '../../components/MediaUploadTabs';
 
-// styles
-import useStyles from './pageDetail.styles';
+/* styles */
+import styles from 'assets/jss/core/views/pageEditorStyle';
+import Alert from '@material-ui/lab/Alert';
+import MediaUploadTabs from '../MediaUploadTabs';
+import {
+  prodStatusOptions
+} from '../../pages/products/lib/constants';
 
-function PageDetail(props) {
+const useStyles = makeStyles(styles);
+
+function ProductDetails(props) {
   // create styles for this component
   const classes = useStyles();
 
-  const { data } = props;
+  const { data, allProducts, prodStatus} = props;
+  const refRelatedPages = useRef();
+  const productForm = useRef();
 
-  const [pageStatus, setPageStatus] = React.useState('draft');
+  const [currentProdStatus, setCurrentProdStatus] = React.useState(prodStatus);
+  const [saveStatus, setSaveStatus] = React.useState(false);
   const [fields, setFields] = React.useState(data);
+  const [selectedRelatedPages, setSelectedRelatedPages] = React.useState([]);
 
-  const pageStatusOptions = [
-    { key: 'publish', value: 'Publish' },
-    { key: 'draft', value: 'Draft' },
-    { key: 'future', value: 'Future' },
-    { key: 'pending', value: 'Pending' },
-    { key: 'private', value: 'Private' },
-    { key: 'trash', value: 'Trash' }
-  ];
+  const relatedPageList = allProducts.map(item => {
+    return { id: item.id, title: item.prodName };
+  });
 
-  const pageMenuPositions = [
-    { key: 'header', value: 'Header Menu' },
-    { key: 'footer', value: 'Footer Menu' },
-    { key: 'side', value: 'Side Menu' }
-  ];
-
-  const top100Films = [
-    { title: 'The Shawshank Redemption', year: '1994' },
-    { title: 'The Godfather', year: '1972' },
-    { title: 'The Godfather: Part II', year: '1974' },
-    { title: 'The Dark Knight', year: '2008' },
-    { title: '12 Angry Men', year: '1957' },
-    { title: "Schindler's List", year: '1993' },
-    { title: 'Pulp Fiction', year: '1994' }
-  ];
+  const pageList = [...relatedPageList];
+  pageList.push({ id: 'root', title: 'Root' });
 
   const handleStatusChange = event => {
     setPageStatus(event.target.value);
@@ -69,7 +62,51 @@ function PageDetail(props) {
     console.log(newValue);
   };
 
-  const handleSubmit = event => {
+  const handleChangeRelatedPages = (event, values) => {
+    const selected = values.map(item => {
+      return item.id;
+    });
+
+    setSelectedRelatedPages(selected);
+  };
+
+
+  const fieldMapper = form => {
+    let submittedFields = {};
+
+    for (const property in data) {
+      submittedFields = {
+        ...submittedFields,
+        ...{ [property]: form[property].value }
+      };
+    }
+
+    submittedFields = {
+      ...submittedFields,
+      ...{ relatedPages: JSON.stringify(selectedRelatedPages) }
+    };
+    return submittedFields;
+  };
+
+  const handleSubmit = async () => {
+    const form = productForm.current;
+
+    const submittedFields = fieldMapper(form);
+
+    const options = {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(submittedFields)
+    };
+
+    const response = await fetch('http://localhost:5023/api/pages', options);
+
+    if (response.ok === true) {
+      setSaveStatus(true);
+    }
+  };
+
+  /*const handleSubmit2 = event => {
     event.preventDefault();
     let submittedFields = {};
 
@@ -84,13 +121,13 @@ function PageDetail(props) {
 
     console.log(submittedFields);
     setFields(submittedFields);
-  };
+  };*/
 
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
   return (
-    <form noValidate onSubmit={handleSubmit}>
+    <form noValidate>
       <Grid container spacing={3} justify="flex-start" alignItems="flex-start">
         <Grid item xs={12} md={12} lg={2} xl={3} />
         <Grid
@@ -101,43 +138,66 @@ function PageDetail(props) {
           xl={6}
           className={classNames(classes.container)}
         >
-          <Button color="primary" size="lg" type="submit">
+          {saveStatus ? <Alert severity="success">Page Saved</Alert> : null}
+
+          <Button color="primary" size="lg" onClick={handleSubmit}>
             {' '}
             Save{' '}
           </Button>
-          <Box className={classes.boxContainer}>
+          <Box title="Page Main" className={classes.boxContainer}>
             <TextField
               variant="outlined"
-              id="pageName"
-              label="Page Name"
-              name="pageName"
+              id="prodName"
+              label="Product Name"
+              name="prodName"
               margin="dense"
-              defaultValue={fields.pageName}
+              defaultValue={fields.prodName}
               required
               fullWidth
             />
             <TextField
               variant="outlined"
-              id="pageStrapline"
-              label="Strapline"
-              name="pageStrapline"
+              id="seoFriendlyLinkId"
+              label="SEO Link"
+              name="seoFriendlyLinkId"
               margin="dense"
-              defaultValue={fields.pageStrapline}
+              defaultValue={fields.seoFriendlyLinkId}
               fullWidth
             />
             <TextField
               variant="outlined"
-              id="pageDescription"
-              label="Description"
-              name="pageDescription"
+              id="customLink"
+              label="Custom Link"
+              name="customLink"
               margin="dense"
-              defaultValue={fields.pageDescription}
+              defaultValue={fields.customLink}
+              fullWidth
+            />
+            <TextField
+              variant="outlined"
+              id="longDescription"
+              label="Long Description"
+              name="longDescription"
+              margin="dense"
+              defaultValue={fields.longDescription}
+              multiline
+              rows={8}
+              fullWidth
+            />
+            <TextField
+              variant="outlined"
+              id="shortDescription"
+              label="Short Description"
+              name="shortDescription"
+              margin="dense"
+              defaultValue={fields.shortDescription}
               multiline
               rows={8}
               fullWidth
             />
           </Box>
-          <Box className={classes.boxContainer}>
+
+          <Box title="Images" className={classes.boxContainer}>
             <Typography variant="subtitle2" component="h6">
               Images
             </Typography>
@@ -173,102 +233,31 @@ function PageDetail(props) {
             </Grid>
           </Box>
 
-          <Box className={classes.boxContainer}>
+          <Box title="Page Settings" className={classes.boxContainer}>
             <Typography variant="subtitle2" component="h6">
               Page Settings
             </Typography>
             <Divider className={classes.divider} />
-            <Autocomplete
-              id="parentPage"
-              name="parentPage"
-              options={top100Films}
-              getOptionLabel={option => option.title}
-              defaultValue={fields.parentPage}
-              onChange={handleParentPageChange}
-              renderInput={params => (
-                <TextField
-                  {...params}
-                  label="Parent Page"
-                  variant="outlined"
-                  margin="dense"
-                />
-              )}
-            />
 
             <TextField
-              id="displayMenuLocation"
-              name="displayMenuLocation"
+              id="prodStatus"
+              name="prodStatus"
               select
-              label="Display Menu Location"
-              value=""
-              onChange={handleStatusChange}
+              label="Product Status"
+              defaultValue={fields.prodStatus}
               variant="outlined"
               margin="dense"
               fullWidth
             >
-              {pageMenuPositions.map((option, index) => (
+              {prodStatusOptions.map((option, index) => (
                 <MenuItem key={index} value={option.key}>
                   {option.value}
                 </MenuItem>
               ))}
             </TextField>
-            <TextField
-              id="pageStatus"
-              name="pageStatus"
-              select
-              label="Page Status"
-              value={fields.pageStatus}
-              onChange={handleStatusChange}
-              variant="outlined"
-              margin="dense"
-              fullWidth
-            >
-              {pageStatusOptions.map((option, index) => (
-                <MenuItem key={index} value={option.key}>
-                  {option.value}
-                </MenuItem>
-              ))}
-            </TextField>
-            <TextField
-              variant="outlined"
-              id="pagePosition"
-              label="Page Position"
-              name="pagePosition"
-              margin="dense"
-              defaultValue={fields.pagePosition}
-              fullWidth
-            />
-          </Box>
-          <Box className={classes.boxContainer}>
-            <Typography variant="subtitle2" component="h6">
-              Meta Data
-            </Typography>
-            <Divider className={classes.divider} />
-            <TextField
-              id="metaDescription"
-              name="metaDescription"
-              label="Meta Description"
-              margin="dense"
-              multiline
-              rows={4}
-              defaultValue={fields.metaDescription}
-              variant="outlined"
-              fullWidth
-            />
-            <TextField
-              id="metaKeywords"
-              name="metaKeywords"
-              label="Meta Keywords"
-              margin="dense"
-              multiline
-              rows={4}
-              defaultValue={fields.metaKeywords}
-              variant="outlined"
-              fullWidth
-            />
           </Box>
 
-          <Box className={classes.boxContainer}>
+          <Box title="Related Pages" className={classes.boxContainer}>
             <Typography variant="subtitle2" component="h6">
               Related Pages
             </Typography>
@@ -277,9 +266,9 @@ function PageDetail(props) {
               multiple
               id="relatedPages"
               name="relatedPages"
-              options={top100Films}
-              defaultValue={fields.relatedPages}
-              disableCloseOnSelect
+              ref={refRelatedPages}
+              options={relatedPageList}
+              onChange={handleChangeRelatedPages}
               getOptionLabel={option => option.title}
               renderOption={(option, { selected }) => (
                 <React.Fragment>
@@ -296,20 +285,21 @@ function PageDetail(props) {
                 <TextField
                   {...params}
                   variant="outlined"
-                  label="Pages"
-                  placeholder="Pages"
+                  label="Related Pages"
+                  margin="dense"
                 />
               )}
             />
           </Box>
         </Grid>
+        <Grid item xs={12} md={12} lg={2} xl={3} />
       </Grid>
     </form>
   );
 }
 
-PageDetail.propTypes = {
+ProductDetails.propTypes = {
   data: PropTypes.object
 };
 
-export default PageDetail;
+export default ProductDetails;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createElement } from 'react';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import ListItem from '@material-ui/core/ListItem';
@@ -10,6 +10,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import List from '@material-ui/core/List';
 import Collapse from '@material-ui/core/Collapse';
 import classNames from 'classnames';
+import * as Icons from '@material-ui/icons/';
 import useStyles from './sidebar.styles';
 
 export default function CustomListItem(props) {
@@ -33,15 +34,16 @@ export default function CustomListItem(props) {
   const menuName = `menu-${item.name.toLowerCase()}`;
 
   const subMenuList = subMenu.map((subItem, key) => {
-
-    const subMenuName = `submenu-${subItem.name.toLowerCase().replace(' ', '-')}`;
+    const subMenuName = `submenu-${subItem.name
+      .toLowerCase()
+      .replace(' ', '-')}`;
 
     return (
       <Link href={subItem.path} key={key}>
         <a className={classes.listItemSub}>
           <ListItem button className={classes.nested}>
             <ListItemIcon className={classes.itemIcon}>
-              <subItem.icon />
+              {createElement(Icons[subItem.icon])}
             </ListItemIcon>
             <ListItemText
               primary={
@@ -67,7 +69,7 @@ export default function CustomListItem(props) {
         className={parentListItemClasses}
       >
         <ListItemIcon className={classes.itemIcon}>
-          <item.icon />
+          {createElement(Icons[item.icon])}
         </ListItemIcon>
 
         <ListItemText
@@ -95,6 +97,6 @@ export default function CustomListItem(props) {
 }
 
 CustomListItem.propTypes = {
-    item: PropTypes.object,
-    role: PropTypes.string,
+  item: PropTypes.object,
+  role: PropTypes.string
 };

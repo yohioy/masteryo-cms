@@ -1,5 +1,3 @@
-import React from 'react';
-
 // layout for this page
 import Admin from '../../components/Layout/Admin';
 

@@ -1,17 +1,16 @@
 import React from 'react';
 
 // layout for this page
-import Admin from "../../components/Layout/Admin";
-import PageListGrid from "../../components/PageListGrid";
+import Admin from '../../components/Layout/Admin';
+import PageListGrid from '../../components/PageListGrid';
 
 function Pages({ data, total }) {
-
-    return (
-        <div>
-            Pages page
-            <PageListGrid rowData={data} total={total} />
-        </div>
-    );
+  return (
+    <div>
+      Pages page
+      <PageListGrid rowData={data} total={total} />
+    </div>
+  );
 }
 
 export async function getServerSideProps() {

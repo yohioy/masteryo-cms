@@ -1,0 +1,37 @@
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+
+[
+{
+"id": "00000001",
+"sku": "sku00000001",
+"prodName": "Product one",
+"shortDescription": "abc shortDescription",
+"longDescription": "abc longDescription",
+"images": null,
+"basePrice": "12.000",
+"taxClass": "1",
+"freeStock": "20",
+"minStock": "5",
+"categories": ["001","002"],
+"createdDate": 1611061295789,
+"modifiedDate": 1611061295789,
+"prodStatus": "publish"
+},
+{
+"id": "00000002",
+"sku": "sku00000002",
+"prodName": "Product two",
+"shortDescription": "abc shortDescription",
+"longDescription": "abc longDescription",
+"images": null,
+"basePrice": "19.000",
+"taxClass": "1",
+"freeStock": "10",
+"minStock": "5",
+"categories": ["003","004"],
+"createdDate": 1611061295789,
+"modifiedDate": 1611061295789,
+"prodStatus": "publish"
+}
+]
